@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simplificador de analiticas</title>
+    <script>
+        function procesarTexto() {
+            let inputTexto = document.getElementById("inputTexto").value;
+            let outputTexto = inputTexto
+                .replace(/\[.*?\]/g, "") // Elimina todo lo entre corchetes
+                .replace(/\b(Deseable|Limitante|Indeseable|HOMBRE|MUJER|Mujer > 0.7):?/g, "") // Elimina palabras específicas y ':' si está después
+        // Elimina las frases completas no deseadas
+        .replace(/Multiplicar por 1,159 si el paciente es de raza negra\./g, "")
+        .replace(/60 - 90: F\.G\. Normal o compatible con IRC estadío 1 o 2 \(si persiste durante 3 o más meses\)\./g, "")
+        .replace(/30 - 59: F\.G\. compatible con IRC estadío 3 \(si persiste durante 3 o más meses\)\./g, "")
+        .replace(/15 - 29: F\.G\. compatible con IRC estadío 4 \(si persiste durante 3 o más meses\)\./g, "")
+        .replace(/< 15: F\.G\. compatible con IRC estadío 5 \(si persiste durante 3 o más meses\)\./g, "")
+        .replace(/> 90: F\. G\. Normal/g, "")
+     .replace(/Nuevos valores de referencia a partir del/g, "")
+      .replace(/Cambio de valores de referencia desde el /g, "")
+             .replace(/mL\/min\/1.73m2\./g, "")
+           
+         
+            
+         //  .replace(/.{2}\/.{4}/g, "") // Elimina 4 caracteres anteriores y posteriores del simbolo /
+            .replace(/\S*\/\S*/g, "") // Elimina el símbolo '/' y las letras que lo preceden y lo siguen
+            
+         .replace(/\b(Colesterol):?/g, "") 
+            .replace(/\b(colesterol):?/g, "") 
+            //cambio de siglas
+            
+            .replace(/\b(GLUCOSA):?/g, "Gluc") 
+            .replace(/\b(UREA):?/g, "Urea") 
+            .replace(/\b(AC.URICO):?/g, "AU") 
+            .replace(/\b(CREATININA):?/g, "Cr")
+             .replace(/\b(Estimación CKD-EPI):?/g, "FGR")  
+            .replace(/\b(PROT.TOT):?/g, "ProtT")
+            .replace(/\b(COLEST TOT):?/g, "Colest total") 
+            .replace(/\b(TRIGLICERIDOS):?/g, "TG") 
+            .replace(/\b(HDL COLESTEROL):?/g, "HDL") 
+            .replace(/\b(LDL COLESTEROL):?/g, "LDL")
+             .replace(/\b(CALCIO):?/g, "Ca")  
+            .replace(/\b(FOSF INORG):?/g, "P")
+            .replace(/\b(BILIRRUBINA TOT.):?/g, "BrT") 
+            .replace(/\b(MAGNESIO):?/g, "Mg") 
+            .replace(/\b(HIERRO):?/g, "Hierro") 
+            .replace(/\b(TRANSFERRINA):?/g, "Transferrina")
+             .replace(/\b(INDICE SATURACION Transferrina):?/g,"IST")  
+            .replace(/\b(FERRITINA):?/g, "ferritina")
+            .replace(/\b(ALBUMINA):?/g, "album") 
+            .replace(/\b(CLORO):?/g, "Cl") 
+            .replace(/\b(SODIO):?/g, "Na") 
+            .replace(/\b(POTASIO):?/g, "K")
+             .replace(/\b(ACIDO FOLICO):?/g, "Ac. fólico")  
+            .replace(/\b(VITAMINA B-12):?/g, "vit B12")
+            .replace(/\b(T4 LIBRE):?/g, "T4") 
+            .replace(/\b(Hb GLICOSILADA A1C):?/g, "HbA1c")
+            .replace(/\b((NGSPDCCT)):?/g, "") 
+            .replace(/\b(ANALISIS CLINICOS):?/g, "") 
+            .replace(/\b(Sanidad de Castilla y León):?/g, "") 
+            .replace(/\b(CONSULTA EXTERNA):?/g, "")  
+            .replace(/\b(OBSERVACIONES:):?/g, "")
+            .replace(/\b(Dr.Dra):?/g, "") 
+            .replace(/\b(NO INFORMADO):?/g, "")
+            .replace(/\b(Fecha solicitud):?/g, "") 
+            .replace(/\b(Destino :):?/g, "") 
+            .replace(/\b(ServicioC.Salud :):?/g, "") 
+            .replace(/\b(PRUEBA):?/g, "")  
+            .replace(/\b(UNIDADES):?/g, "")
+            .replace(/\b(RESULTADO):?/g, "") 
+            .replace(/\b(VALOR REFERENCIA):?/g, "")
+            .replace(/\b(Cama - Habitación :):?/g, "") 
+            .replace(/\b(Destino :):?/g, "") 
+            .replace(/\b(Servicio Peticionario :):?/g, "")
+            .replace(/\b(Nº Petición :):?/g, "") 
+            .replace(/\b(Historia :):?/g, "")
+            .replace(/\b(Nº Petición :):?/g, "") 
+            .replace(/\b(Apellidos :):?/g, "")
+            .replace(/\b(Nombre :):?/g, "") 
+            .replace(/\b(Sexo :):?/g, "")
+            .replace(/\b(A NO INFORMADO):?/g, "")
+            
+            
+            // fin cambio siglas
+            .replace(/.{4}-{1}.{4}/g, "") // Elimina 4 caracteres anteriores y posteriores del simbolo -
+                .replace(/\d*-\d*/g, "") // Elimina todos los números que preceden y siguen al símbolo '-'
+                .replace(/[<>]\d*/g, "") // Elimina símbolos > o < seguidos de números
+            .replace(/\s+/g, " ") // Reemplaza múltiples espacios por uno solo
+                .trim();
+            document.getElementById("resultado").innerText = outputTexto;
+        }
+    </script>
+</head>
+<body>
+    <h2>Pega analitica pagina a pagina sin datos del paciente (encabezado):</h2>
+    <textarea id="inputTexto" rows="5" cols="50"></textarea><br>
+    <button onclick="procesarTexto()">Procesar</button>
+    <h2>Resultado:</h2>
+    <div id="resultado" style="white-space: pre-wrap; border: 1px solid #000; padding: 10px; width: 50%;"></div>
+</body>
+</html>
